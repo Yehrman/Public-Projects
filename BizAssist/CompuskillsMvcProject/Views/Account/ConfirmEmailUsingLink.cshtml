@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "ConfirmEmail";
+<h2>Confirm Email</h2>
+    if(ViewBag.Confirmed==true)
+    {
+        <b>Congratulations you've confirmed your email @Html.ActionLink("Click here","Login") to login</b>
+    }
+    else
+    {
+<b>Sorry you're email wasn't confirmed.Please try to type the link from your email straight into your address bar</b>
+    }
+}
+
+

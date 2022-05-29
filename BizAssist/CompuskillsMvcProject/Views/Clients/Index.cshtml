@@ -1,0 +1,121 @@
+﻿@model IEnumerable<MvcProjectDbConn.Client>
+@using CompuskillsMvcProject.EncryptionDecryption;
+@using EncryptDecrypt
+@{
+    DataConnection conn = new DataConnection();
+    DecryptEncrypt decryption = new DecryptEncrypt();
+    ViewBag.Title = "Index";
+}
+
+<h2>Clients</h2>
+<style>
+    span {
+        margin: 164px;
+    }
+
+    p {
+        font-size: 20px;
+    }
+</style>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+    <script>
+        $(document).ready(function () {
+            "use strict";
+
+            $("span#searchLink").on("click", function () {
+                $("div#search").slideToggle();
+            })
+        });
+    </script>
+}
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BillByClient)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BillByProject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BillRate)
+        </th>
+
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        //var first=   conn.DecryptData(item.FirstName,item.DateAdded);
+        //     var last=   conn.DecryptData(item.LastName, item.DateAdded);
+        //    var email=    conn.DecryptData(item.Email, item.DateAdded);
+        //     //   conn.DecryptData(item.PhoneNumber, item.DateAdded);
+        //    var address=    conn.DecryptData(item.Address, item.DateAdded);
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+        <td>
+           @Html.DisplayFor(modelItem=> item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillByClient)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillByProject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BillRate)
+        </td>
+
+
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.ClientId }) |
+            @Html.ActionLink("Do job for this client", "CreateProjectForClient", "Projects", new { id = item.ClientId }, null)
+        </td>
+        </tr>
+    }
+
+</table>
+<style>
+    span {
+        margin: 70px;
+    }
+</style>
+<span>@Html.ActionLink("View deleted clients", "ViewDeletedClients") </span>
+
+<span id="searchLink">
+    @Ajax.ActionLink("open/close search", "Search",
+new AjaxOptions { UpdateTargetId = "search" })
+</span>
+
+<div id="search"></div>

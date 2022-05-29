@@ -1,0 +1,90 @@
+﻿@model IEnumerable<MvcProjectDbConn.EmployeePayStub>
+@using CompuskillsMvcProject.Models;
+@using Microsoft.AspNet.Identity;
+            <h2>Employee Pay Stubs</h2>
+@{
+    ViewBag.Title = "Index";
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    var user = User.Identity.GetUserId();
+    var date = lookups.DatePayed(user);
+    var interval = lookups.IntervalEquality(user);
+    if(interval==true)
+    {
+               <p> Your client bills were tallied today @Html.ActionLink("click here","Index","ClientBills") to view them</p>
+    }
+}
+
+            
+            
+
+
+            <table class="table">
+                <tr>
+                    <th>
+                        Employee name
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.PayCheck)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PayDay)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Employee.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PayCheck)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PayDay)
+                        </td>
+                        <td>
+
+                            @Html.ActionLink("Details", "Details", new { id = item.id })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            @section scripts{
+                @Scripts.Render("~/bundles/jqueryunobtrusive")
+                <script>
+                    $(document).ready(function () {
+                        "use strict";
+                        $("p").hide();
+                        $("span#Pay").on("mouseover", function () {
+                            $("p").show();
+                        })
+                        $("span#Pay").on("mouseleave", function () {
+                            $("p").hide();
+                        })
+                        $("span#searchLink").on("click", function () {
+                            $("div#search").slideToggle();
+                        })
+                    });
+                </script>
+            }
+            <style>
+                span {
+                    margin: 164px;
+                }
+            </style>
+
+            <span id="searchLink">@Ajax.ActionLink("open/close search", "Search", new AjaxOptions { UpdateTargetId = "search" })</span>
+            <span id="Pay">@Html.ActionLink("Pay employees", "PayEmployees")</span>
+            <p>
+                @lookups.BillPayMessage(user, date);
+                Click the Pay employees link if this date has come and
+                you aren't being shown the paystubs
+            </p>
+            <div id="search"></div>
+            
+            

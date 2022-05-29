@@ -1,0 +1,42 @@
+﻿@model MvcProjectDbConn.TimeSheetEntry
+@using CompuskillsMvcProject.Models;
+@using Microsoft.AspNet.Identity;
+<style>
+    p,strong{
+        font-size:20px;
+    }
+</style>
+
+@{
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    TimeZones timeZones = new TimeZones();
+    var date = DateTime.UtcNow;
+    var user = User.Identity.GetUserId();
+
+
+    @Html.ValidationMessage("Error")
+
+    if (ViewBag.DifferentDate == true)
+    {
+
+
+        <p>You never punched out yesterday.please contact your supervisor</p>
+        <p> @timeZones.PunchinOut(user, date, "in")</p>
+        <p>  @ViewBag.DelayedPunchIn</p>
+    }
+    else if (ViewBag.PayError == true)
+    {
+        <strong>You need to have a payRate before punching in </strong>
+    }
+    else if (ViewBag.Mixup == true)
+    {
+        <strong>You are still punched in till @lookups.WillBePunchedOut(user) So you can't punch in till then</strong>
+    }
+
+    else
+    {
+        <p>@timeZones.PunchinOut(user, date, "in")  </p>
+        <p>  @ViewBag.DelayedPunchIn</p>
+    }
+}
+@Html.ActionLink("View all timesheet entries", "TimeSheetEntriesForCurrentUser")

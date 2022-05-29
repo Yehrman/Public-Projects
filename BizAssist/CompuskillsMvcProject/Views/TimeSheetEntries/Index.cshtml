@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MvcProjectDbConn.TimeSheetEntry>
+    @using Microsoft.AspNet.Identity;
+@using CompuskillsMvcProject.Models;
+        <h2> Timesheet Entries</h2>   
+@{ 
+    TimeZones zones = new TimeZones();
+    var user = User.Identity.GetUserId();
+
+}
+<table class="table">
+    <tr>
+
+        <th>
+            Employee
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+           
+            
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.ProjectName)
+            </td>
+            <td>
+                @zones.ConvertEntries(item.StartTime,user)
+           
+            </td>
+            <td>
+                @zones.ConvertEntries(item.EndTime,user)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.TimeSheetEntryId }) |
+
+            </td>
+        </tr>
+    }
+</table>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+    <script>
+        $(document).ready(function () {
+            "use strict";
+
+            $("span#searchLink").on("click", function () {
+                $("div#search").slideToggle();
+            })
+        });
+    </script>
+}
+<style>
+    span {
+        margin: 60px;
+    }
+</style>
+<span id="seachLink">@Ajax.ActionLink("open/close search", "Search", new AjaxOptions { UpdateTargetId = "search" })</span>
+<span>@Html.ActionLink("View punchins where more the 10 hours passed without a punchout", "DelayedPunchoutIndex") </span>
+<div id="search"></div>

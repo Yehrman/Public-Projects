@@ -1,0 +1,102 @@
+﻿@model IEnumerable<MvcProjectDbConn.CompanyEmployee>
+@using Microsoft.AspNet.Identity
+@using CompuskillsMvcProject.Models;
+@{
+    ViewBag.Title = "Index";
+    var user = User.Identity.GetUserId();
+
+    int i = 0;
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    var roles = lookups.Employees(user);
+  
+        <h2>Employees</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Register","Account")
+        </p>
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employee.Email)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Employee.PhoneNumber)
+                </th>
+                <th>
+                    Job title
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model=>model.RoleId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PayRate)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Email)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>item.JobTitle)
+                    </td>
+                    <td>                       
+                        @roles[i]
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PayRate)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                        
+                        @Html.ActionLink("Set employee pay rate", "SetPayRate", new { id = item.id })
+                    </td>
+                </tr>
+                i++;
+            }
+
+        </table>
+    }
+    <style>
+        span {
+            margin: 70px;
+        }
+    </style>
+@if (User.IsInRole("Ceo"))
+{
+     @Html.ActionLink("Change roles", "ChangeRole")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+    <script>
+        $(document).ready(function () {
+            "use strict";
+
+            $("span#searchLink").on("click", function () {
+                $("div#search").slideToggle();
+            })
+        });
+    </script>
+}
+
+  <span id="searchLink">  @Ajax.ActionLink("open/close search", "Search",
+  new AjaxOptions { UpdateTargetId = "search" })</span>
+
+<div id="search"></div>

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<MvcProjectDbConn.WorkSchedule>
+
+@{
+    ViewBag.Title = "TodaysJobs for " + User.Identity.Name;
+}
+
+<h2>Todays Jobs</h2>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+    <script>
+        $("span#out").hide();
+        $("span#in").on("click", function () {
+            $(this).hide();
+            $("span#out").show();
+            $("table").hide();
+        });
+        $("span#out").on("click", function () {
+            $(this).hide();
+            $("table").show();
+        });
+    </script>
+}
+<p>To view all of your time sheet entries @Html.ActionLink("click here", "TimeSheetEntriesForCurrentUser", "TimeSheetEntries")</p>
+<table class="table">
+    <tr>
+         
+        <th>
+            @Html.DisplayNameFor(model => model.Client.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsScheduledPunchOut)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.ProjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsScheduledPunchOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+
+
+
+                <span id="in">
+                    @Ajax.ActionLink("Punchin", "PunchIn", "TimeSheetEntries", new { id = item.ProjectId },
+        new AjaxOptions { UpdateTargetId = "PunchIn" })
+                </span>|
+
+                <span id="out">
+                    @Html.ActionLink("PunchOut", "PunchOut", "TimeSheetEntries")
+                </span>
+
+            </td>
+        </tr>
+    }
+
+
+</table>
+<span id="out">
+    @Html.ActionLink("PunchOut", "PunchOut", "TimeSheetEntries")
+</span>
+<div id="PunchIn"></div>

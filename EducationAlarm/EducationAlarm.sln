@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationAlarm", "EducationAlarm\EducationAlarm.csproj", "{E7D5536B-DD23-4CA6-9AD3-9D5EE9F3852A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D0FB760B-2104-4736-AD6A-28BB16A3F55E} = {D0FB760B-2104-4736-AD6A-28BB16A3F55E}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EducationAlarmDb", "EducationAlarmDb\EducationAlarmDb.csproj", "{D0FB760B-2104-4736-AD6A-28BB16A3F55E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7D5536B-DD23-4CA6-9AD3-9D5EE9F3852A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D5536B-DD23-4CA6-9AD3-9D5EE9F3852A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D5536B-DD23-4CA6-9AD3-9D5EE9F3852A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D5536B-DD23-4CA6-9AD3-9D5EE9F3852A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0FB760B-2104-4736-AD6A-28BB16A3F55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0FB760B-2104-4736-AD6A-28BB16A3F55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0FB760B-2104-4736-AD6A-28BB16A3F55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0FB760B-2104-4736-AD6A-28BB16A3F55E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {171979DE-A98A-4FFF-B8DE-DAF0BD600B47}
+	EndGlobalSection
+EndGlobal

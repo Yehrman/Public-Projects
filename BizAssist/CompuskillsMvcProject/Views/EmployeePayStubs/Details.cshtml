@@ -1,0 +1,64 @@
+﻿@model MvcProjectDbConn.EmployeePayStub
+@using CompuskillsMvcProject.Models;
+@{
+    ErrorMessages error = new ErrorMessages();
+    ViewBag.Title = "Details";
+}
+@{ if (ViewBag.error == true)
+    {
+        <p>@error.IdError()</p>
+    }
+    else if (ViewBag.clientError == true)
+    {
+        <p> @error.NullError("employee pay stub")</p>
+    }
+    else
+    {
+
+
+        <h2>Details</h2>
+
+        <div>
+            <h4>EmployeePayStub</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Company.CompanyName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Company.CompanyName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Employee.Email)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Employee.Email)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PayCheck)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PayCheck)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PayDay)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PayDay)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+}

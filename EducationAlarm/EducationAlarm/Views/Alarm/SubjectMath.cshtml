@@ -1,0 +1,96 @@
+﻿@model UserMathAnswers
+@using EducationAlarm.ViewModels;
+@using Microsoft.AspNet.Identity;
+
+<h2>Subject Math</h2>
+
+<h3>Please type or paste the correct answer in the textbox</h3>
+
+@{ 
+    MathProblems mp = new MathProblems();
+    ViewDbLookups db = new ViewDbLookups();
+    string id = User.Identity.GetUserId();
+    string subject = db.FindSubject(id);
+    ViewBag.Title = "KnowledgeSolve";
+}
+
+@using (Html.BeginForm())
+    {
+   
+    <div class="form-horizontal">
+    <div class="form-group">
+        @{var list = mp.ShuffledList(id);
+            <p>1)@list[0]</p>
+            for (int j = 1; j < list.Count; j++)
+            {
+                @*<p>@Html.RadioButton("Guess", list[j], mp.Guess)</p>*@
+                <p> @list[j] </p>
+            }
+        }
+
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.Answer, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Answer, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @{var list2 = mp.ShuffledList(id);
+            <p>2)@list2[0]</p>
+            for (int j = 1; j < list2.Count; j++)
+            {
+                @*<p>@Html.RadioButton("Guess", list[j], mp.Guess)</p>*@
+                <p> @list2[j] </p>
+            }
+        }
+
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.Answer2, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Answer2, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @{ var list3 = mp.ShuffledList(id);
+            <p>3)@list3[0]</p>
+            for (int j = 1; j < list3.Count; j++)
+            {
+                <p> @list3[j] </p>
+            }
+        }
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.Answer3, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Answer3, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @{ var list4 = mp.ShuffledList(id);
+            <p>4)@list4[0]</p>
+            for (int j = 1; j < list4.Count; j++)
+            {
+                <p> @list4[j] </p>
+            }
+        }
+        <div class="col-md-5">
+            @Html.EditorFor(model => model.Answer4, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Answer4, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit" class="btn btn-default" />
+        </div>
+    </div>
+    
+</div>
+}
+@if (ViewBag.Error == true)
+{
+    <p>Please answer all the questions</p>
+
+}
+
+

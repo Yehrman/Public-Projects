@@ -1,0 +1,108 @@
+﻿@model IEnumerable<MvcProjectDbConn.ClientBill>
+@using CompuskillsMvcProject.Models;
+
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Index";
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    var user = User.Identity.GetUserId();
+    var date = lookups.DateBilled(user);
+}
+
+<h2>Client Bills</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeWorked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bill)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateBilled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DatePaymentRecieved)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.ClientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.ProjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeWorked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bill)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateBilled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DatePaymentRecieved)
+            </td>
+            <td>
+
+                @Html.ActionLink("Details", "Details", new { id = item.id })
+
+            </td>
+        </tr>
+       
+
+    }
+
+</table>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+
+    <script>
+        $(document).ready(function () {
+            "use strict";
+           // $("button").hide();
+            $("p").hide();
+           
+            $("span#Pay").on("mouseover", function () {
+                $("p").show();
+            })
+            $("span#Pay").on("mouseleave", function () {
+                $("p").hide();
+            })
+            $("span#searchLink").on("click", function () {
+                $("div#search").slideToggle();
+            })
+        });
+    </script>
+}
+<style>
+     span{
+        margin:164px;
+    }
+</style>
+<span id="searchLink">@Ajax.ActionLink("open/close search", "Search", new AjaxOptions { UpdateTargetId = "search" })</span>
+<span id="Pay">@Html.ActionLink("bill clients", "Bill") </span>
+<div id="search"></div>
+
+<p>
+  
+    @lookups.BillPayMessage(user,date);
+    Click the bill clients link if this date has come and
+    you are'nt being shown the bills owed to you
+</p>
+        
+    

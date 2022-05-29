@@ -1,0 +1,74 @@
+﻿@model IEnumerable<MvcProjectDbConn.Project>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Projects</h2>
+
+<strong>
+    @Html.ActionLink("Create New", "CreateSelect")
+</strong>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCompleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model=>model.IsForClient)
+        </th>
+        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjectName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.IsCompleted)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DateCompleted)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem =>item.IsForClient)
+    </td>
+    <td>
+       
+        @Html.ActionLink("Details","Details",new { id=item.ProjectId})
+    </td>
+</tr>
+    }
+
+</table>
+<style>
+    span {
+        margin: 70px;
+    }
+</style>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+    <script>
+        $(document).ready(function () {
+            "use strict";
+
+            $("span#searchLink").on("click", function () {
+                $("div#search").slideToggle();
+            })
+        });
+    </script>
+}
+<span id="searchLink"> @Ajax.ActionLink("open/close search", "Search", new AjaxOptions { UpdateTargetId = "search" })</span>
+<span>@Html.ActionLink("Go to projects for a client", "ClientProjectIndex")</span>
+<div id="search"></div>

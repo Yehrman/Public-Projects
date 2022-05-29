@@ -1,0 +1,36 @@
+﻿@model MvcProjectDbConn.Company
+
+@{
+    ViewBag.Title = "Delete";
+}
+<h2>Delete</h2>
+<b>Please note that upon deleting your account. You will lose all of your records that are stored in our system.Be sure to retrieve what you need</b>
+<p>Please fill out these form fields to delete your account</p>
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+       
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Delete Account" class="btn-warning" />
+        </div>
+    </div>
+        </div>
+}
+@Html.ValidationMessage("delete")

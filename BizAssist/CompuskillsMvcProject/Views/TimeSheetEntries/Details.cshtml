@@ -1,0 +1,61 @@
+﻿@model MvcProjectDbConn.TimeSheetEntry
+@using CompuskillsMvcProject.Models
+@{
+
+
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+@{
+        ErrorMessages error = new ErrorMessages();
+        if (ViewBag.error == true)
+        {
+        <p> @error.IdError() </p>
+        }
+        else if (ViewBag.clientError == true)
+        {
+        <p>@error.NullError("time sheet entry")</p>
+    
+    }
+        else
+        {
+
+        <div>
+            <h4>TimeSheetEntry</h4>
+            <hr />
+            <dl class="dl-horizontal">
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Project.ProjectId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Project.ProjectId)
+                </dd>
+
+            
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.StartTime)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.EndTime)
+                </dd>
+
+            </dl>
+        </div>
+    }
+}
+<p>
+    @Html.ActionLink("Back to List", "UserIndex")
+</p>

@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "EmployeePay";
+}
+
+<h2>EmployeePay</h2>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            "use strict";
+           
+            $("p#jump").animate({
+                color: "green",
+                fontSize:"100px"
+        },1500)
+        })
+    </script>
+
+    }
+
+<p id="jump">It's pay day and bill day today</p>
+<p> @Html.ActionLink("click here","Index","ClientBills") to see client bills</p>
+<p> @Html.ActionLink("click here", "Index") to see pay stubs </p>

@@ -1,0 +1,25 @@
+﻿@model CompuskillsMvcProject.Models.Utility
+
+@using (Html.BeginForm())
+{
+    <div>
+        <label> Enter (all or part of) the <b>project</b> name</label>
+        @Html.EditorFor(x => x.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div>
+        <label> Search time entries after this date.</label>
+        @Html.EditorFor(x => x.From, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.From)
+    </div>
+    <div>
+        <label> Search all time entries before this date.</label>
+        @Html.EditorFor(x => x.To, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.To)
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Search" class="btn btn-default" />
+        </div>
+    </div>
+}

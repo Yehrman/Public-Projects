@@ -1,0 +1,49 @@
+﻿@model MvcProjectDbConn.CompanyEmployee
+
+@{
+    ViewBag.Title = "SetPayRate";
+    if (ViewBag.error == true)
+    {
+        <p>Please ensure that there is a number at the end of the url</p>
+    }
+    else if (ViewBag.employee == true)
+    {
+        <p>We don't have a employee with that id number in our system</p>
+    }
+    else
+    {
+
+<h2>SetPayRate</h2>
+
+using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>CompanyEmployee</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.id)
+
+        <
+        <div class="form-group">
+            @Html.LabelFor(model => model.PayRate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PayRate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PayRate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+        }
+    }

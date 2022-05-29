@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "HelpAbout";
+}
+<style>
+    .answer{
+        font-size:18px;
+    }
+    .question {
+        font-size:18px;
+        margin-bottom:10px;
+    }
+    b{
+        font-size:17px;
+    }
+    li{
+        font-size:18px;
+    }
+    ul{
+        font-size:18px;
+    }
+</style>
+@section scripts{
+    <script>
+        $(".answer").hide();
+        $("div").on("click", function () {
+            var question = this
+            $(question).next().slideToggle()
+        })
+        $("ol").hide()
+        $(".roles").on("click", function () {
+            $("ol").slideToggle()
+        })
+    </script>
+    }
+<h2> FAQ's</h2>
+
+<div class="question"><a >For what aim was BizAssist developed? </a></div>
+<p class="answer">In the digital age businesses,instututions and organizations are increasingly relying on a computer to store data and automate tasks.
+  While a website to display static content is relatively cheap to put up.Developing a website for storing, updating data  and
+    automating tasks can get very expensive, making it hard for a small buisness or organization to afford.That is where BizAssist comes 
+    in.Our goal is to be the web app for a small buisness/organization.Towards that end we offer many of the services that a normal buisness/organization would
+    need  </p>
+<div class="question"><a> What are the services you offer?</a></div>
+
+    <ul class="answer">
+        <li>Data storage</li>
+        <li>Scheduling</li>
+        <li>Time clocking</li>
+        <li>Automatic tallying of client bills </li>
+        <li>Automatic tallying of employee pay stubs </li>
+        <li>Chat</li>
+    </ul>
+
+<div class="question"><a>I wouldn't want my employees to have access to all the data I store on the system.Can I control who see's what? </a></div>
+<p class="answer">
+    Absolutely. There are 5 levels of permission for what access an employee have in the system.By default the account holder is in
+    the 'ceo' role and has access to everything whereas a new employee is in the 'employee' role and only has limited access
+  
+<a class="roles" >View all permission levels </a>
+    <ol>
+        <li>Ceo- (by default the user that added the company),he has access to all data of his company and can add remove or change anything</li>
+
+        <li>Senior managment-They have access and edit power on all the information except to change the company settings and to change employee permissions </li>
+
+        <li>Human resources department-They have access and edit power on the employees, clients,and projects information</li>
+
+        <li>Finance department-They have access to all finance information </li>
+
+        <li>Employee-They just have access to clock in and out,chat, and to their information</li>
+    </ol>
+</p>
+<div class="question"> <a>What are the client bill and employee pay intervals  that I fill out when I fill out the company/ organization
+    details</a> </div>
+<p class="answer"> This is the interval at which upon login of the account holder.It will be displayed the billing and paystub amounts</p>
+
+<div class="question"><a> My client data is somewhat confedential.I wouldn't want your database administators seeing it? </a> </div>
+<p class="answer">As of this writing we encrypt the name and email adresses of clients coming into our database so our database
+    administator would just see a illegible entry.We hope to encrypt the remaining kinds of client data in the near future   
+    </p>
+
+ <b>For any questions please don't hesitate to contact us at support@bizassist.me</b>

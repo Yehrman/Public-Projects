@@ -1,0 +1,31 @@
+﻿@model MvcProjectDbConn.TimeSheetEntry
+@using CompuskillsMvcProject.Models;
+@using Microsoft.AspNet.Identity;
+    <style>
+        p{
+            font-size: 20px;
+        }
+    </style>
+@{
+    ViewBag.Title = "PunchOut";
+    var date = DateTime.UtcNow;
+    TimeZones zones = new TimeZones();
+    var user = User.Identity.GetUserId();
+}
+
+<h2>PunchOut</h2>
+
+@{
+
+    if (ViewBag.Error == true)
+    {
+        @Html.ValidationMessage("punchout")
+    }
+  
+    else
+    {
+        <P> @zones.PunchinOut(user,date,"out") </p>
+    }
+}
+
+<p>To view all of your time sheet entries @Html.ActionLink("click here", "TimeSheetEntriesForCurrentUser")</p> 

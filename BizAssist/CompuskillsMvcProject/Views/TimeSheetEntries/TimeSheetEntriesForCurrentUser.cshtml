@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MvcProjectDbConn.TimeSheetEntry>
+@using CompuskillsMvcProject.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "TimeSheetEntriesForCurrentUser";
+    var user = User.Identity.GetUserId();
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    TimeZones zones = new TimeZones();
+        <h2>TimeSheetEntries for @lookups.EmployeeName(user)</h2>    
+}
+
+
+    <table class="table">
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Project.ProjectName)
+            </th>
+
+
+            <th>
+                <time>@Html.DisplayNameFor(model => model.StartTime) </time>  
+             
+            </th>
+            <th>
+                <time> @Html.DisplayNameFor(model => model.EndTime) </time> 
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+          
+
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+
+            </tr>
+        }
+
+    </table>

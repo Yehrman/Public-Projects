@@ -1,0 +1,64 @@
+﻿@model MvcProjectDbConn.ClientBill
+@using CompuskillsMvcProject.Models;
+@{
+    ErrorMessages error = new ErrorMessages();
+    ViewBag.Title = "Details";
+    if (ViewBag.error == true)
+    {
+       <p>@error.IdError(); </p>
+    }
+    else if (ViewBag.clientError == true)
+    {
+        <p> @error.NullError("client bill")</p>
+    }
+    else
+    {
+
+
+<h2>Details</h2>
+
+<div>
+    <h4>ClientBill</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.ClientName)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bill)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bill)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateBilled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateBilled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatePaymentRecieved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatePaymentRecieved)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("record payment recieved", "PaymentRecieved", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+        }
+    }

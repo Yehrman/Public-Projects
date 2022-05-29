@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNet.Identity;
+@using CompuskillsMvcProject.Models;
+@using Microsoft.AspNet.Identity;
+<style>
+    p{ 
+        font-size:18px;
+    }
+</style>
+@{
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    ViewBag.Title = "Dashboard";
+    var user = User.Identity.GetUserId();
+    var companyName = lookups.CompanyName(user);
+
+        <h2> Welcome to the dasboard of @companyName </h2>
+        <h3> Please Select what you'd like to do:</h3>
+        <div >
+        <p> @Html.ActionLink("see your job for today and punch in", "EmployeeDashboard", "WorkSchedules")</p>
+        <p> @Html.ActionLink("schedule jobs", "Create", "WorkSchedules")</p>
+        <p> @Html.ActionLink("View add and manage clients", "Index", "Clients")</p> 
+        <p> @Html.ActionLink("View add and manage Employees", "index", "CompanyEmployees")</p>
+        <p> @Html.ActionLink("View add and manage Projects ", "index", "Projects")</p> 
+        <p> @Html.ActionLink("View  and manage scheduled jobs ", "index", "WorkSchedules")</p>
+         @if (User.IsInRole("Ceo") || User.IsInRole("Senior Managment") || User.IsInRole("Finance department"))
+        {
+            <p>@Html.ActionLink("Go to the finance department dashboard", "FinanceDashboard")</p>
+        }
+        </div>
+      
+    }
+
+
+
+
+

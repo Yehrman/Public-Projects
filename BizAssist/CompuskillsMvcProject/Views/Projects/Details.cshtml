@@ -1,0 +1,87 @@
+﻿@model MvcProjectDbConn.Project
+@using CompuskillsMvcProject.Models;
+@using Microsoft.AspNet.Identity;
+@{
+
+    ErrorMessages error = new ErrorMessages();
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    var user = User.Identity.GetUserId();
+    var perProject = lookups.PerProjects(user);
+    ViewBag.Title = "Details";
+    if (ViewBag.error == true)
+    {
+        error.IdError();
+    }
+    else if (ViewBag.Project == true)
+    {
+        error.NullError("project");
+    }
+    else
+    {
+
+
+        <h2>Details</h2>
+
+        <div>
+            <h4>Project</h4>
+            <hr />
+            <dl class="dl-horizontal">
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.ProjectName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ProjectName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsCompleted)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IsCompleted)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsForClient)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IsForClient)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateCompleted)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.DateCompleted)
+                </dd>
+           
+
+
+            </dl>
+        </div>
+   
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProjectId }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.ProjectId })|
+    @Html.ActionLink("Back to List", "Index")|
+    @if (Model.IsForClient == true)
+    {
+        @Html.ActionLink("See client details", "ClientDetails", new { id = Model.ProjectId })  
+    }|
+
+         @if(perProject==true)
+         {
+             @Html.ActionLink("conclude project", "ConcludeProject","Projects")
+         }
+
+
+</p>
+        }
+    }
+
+ 

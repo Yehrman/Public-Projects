@@ -1,0 +1,57 @@
+﻿@model IEnumerable<MvcProjectDbConn.Chat>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Chats</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Sender
+        </th>
+
+        <th>
+            Recipient
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeChatSent)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @*//Needs work*@
+              @Html.DisplayFor(modelItem=>item.SenderName)
+            </td>
+            <td>
+             @if(item.RecieverId==null)
+             {
+                 <p>All</p>
+             }
+                @Html.DisplayFor(modelItem => item.Employee.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeChatSent)
+            </td>
+
+        </tr>
+    }
+
+</table>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+}
+<b>@Ajax.ActionLink("Send new chat","Create",new AjaxOptions { UpdateTargetId="send"})</b>
+<div id="send"></div>

@@ -1,0 +1,65 @@
+﻿@model MvcProjectDbConn.ClientProject
+@using CompuskillsMvcProject.Models;
+
+@{
+    ErrorMessages error = new ErrorMessages();
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    var billType = lookups.BillByProject(Model.ClientId);
+    ViewBag.Title = "ClientDetails";
+    if (ViewBag.error == true)
+    {
+        error.IdError();
+    }
+    else if (ViewBag.Project == true)
+    {
+        error.NullError("project");
+    }
+    else
+    {
+
+
+
+        <h2>ClientDetails</h2>
+
+        <div>
+            <h4>ClientBill</h4>
+            <hr />
+            <dl class="dl-horizontal">
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Client.ClientName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Client.ClientName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Project.ProjectName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Project.ProjectName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.BillRate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.BillRate)
+                </dd>
+
+
+
+            </dl>
+        </div>
+        <p>
+          @if (billType == true)
+          {
+            @Html.ActionLink("Edit bill rate", "ChangeProjectBillRate", new { id = Model.id }) 
+          }|
+            @Html.ActionLink("Back to List", "ClientProjectIndex")
+        </p>
+        }
+    }

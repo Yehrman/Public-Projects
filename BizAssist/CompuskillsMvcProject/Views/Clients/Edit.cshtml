@@ -1,0 +1,147 @@
+﻿@model MvcProjectDbConn.Client
+@using CompuskillsMvcProject.Models;
+@{
+    ErrorMessages error = new ErrorMessages();
+    ViewBag.Title = "Edit";
+
+    if (ViewBag.error == true)
+    {
+        <p>@error.IdError()</p>
+    }
+    else if (ViewBag.clientError == true)
+    {
+        <p> @error.NullError("client")</p>
+    }
+    else
+    {
+
+        @section scripts{
+            <script>
+                $(document).ready(function () {
+                    "use strict";
+                    $("strong").hide();
+                    $("button").hide();
+                    $("button.project").show();
+                    $("div.project").on("click", function () {
+                        $("div.client").hide();
+                        $("button.client").show();
+                        $("span").hide();
+                    })
+                    $("div.client").on("click", function () {
+                        $("div.project").hide();
+                        $("button.project").show();
+                        $("strong").show();
+                        $("span").hide();
+                    })
+                    $("button.project").on("click", function () {
+                        $(this).hide();
+                        $("div.project").show();
+                    })
+                    $("button.client").on("click", function () {
+                        $(this).hide();
+                        $("div.client").show();
+                    })
+                    $("div.client").on("keypress", function () {
+                        $("strong").hide();
+                    })
+                })
+            </script>
+        }
+
+
+
+
+        <h2>Edit</h2>
+
+        using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Client</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ClientId)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group project">
+        @Html.LabelFor(model => model.BillByProject, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 bool" id="project ">
+            @Html.CheckBoxFor(model => model.BillByProject, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BillByProject, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group client">
+        @Html.LabelFor(model => model.BillByClient, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 bool">
+            @Html.CheckBoxFor(model => model.BillByClient, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BillByClient, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group client">
+        @Html.LabelFor(model => model.BillRate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 bill">
+            @Html.EditorFor(model => model.BillRate, new { htmlAttributes = new { @class = "form-control" } })
+            <strong>Since you're billing on a per client basis. You must fill in a client bill rate. </strong>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+        }
+        <style>
+            button {
+                margin: 75px;
+            }
+        </style>
+      <span>  @Html.ValidationMessage("bools")</span>
+        <button class="btn-link project">Restore project fields</button>
+        <button class="btn-link client">Restore client fields</button>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+}
+

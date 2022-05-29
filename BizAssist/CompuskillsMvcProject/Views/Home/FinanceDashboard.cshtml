@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Identity;
+@using MvcProjectDbConn;
+<style>
+  p{
+        font-size:18px;
+    }
+</style>
+@{
+    ViewBag.Title = "FinanceDashboard";
+    var user = User.Identity.GetUserId();
+    using (BizAssistContext db = new BizAssistContext())
+    {
+        var CompanyName = db.CompanyEmployees.Include("Company").SingleOrDefault(x => x.EmployeeId == user);
+
+        <h2> Welcome to the finance dasboard of @CompanyName.Company.CompanyName </h2>
+
+
+        <h3> Please Select what you'd like to do</h3>
+        <p> @Html.ActionLink("See your job for today and punch in", "EmployeeDashboard", "WorkSchedules")</p>
+        <p> @Html.ActionLink("View and  manage client bills", "Index", "ClientBills")</p> //this screen should ave nav to client bills
+        <p> @Html.ActionLink("View  manage employee pay stubs", "Index", "EmployeePayStubs")</p>//this screen should ave nav to employee pay stubs
+        <p> @Html.ActionLink("View add and manage projects for clients ", "ClientProjectIndex", "Projects")</p> //this screen should ave nav to client projects
+        <p> @Html.ActionLink("View  manage time sheet entries", "Index", "TimeSheetEntries") </p>
+    }
+    if (User.Identity.IsAuthenticated)
+    {
+        <p> @Html.ActionLink("Go to the main dashboard", "Dashboard")</p>
+    }
+}

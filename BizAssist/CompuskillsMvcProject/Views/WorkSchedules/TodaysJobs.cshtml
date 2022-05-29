@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MvcProjectDbConn.WorkSchedule>
+
+@{
+    ViewBag.Title = "TodaysJobs";
+}
+
+<h2>TodaysJobs</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.Employee.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Client.ClientName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Client.ClientName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.ProjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

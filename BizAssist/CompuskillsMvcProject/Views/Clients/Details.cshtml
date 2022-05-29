@@ -1,0 +1,102 @@
+﻿@model MvcProjectDbConn.Client
+@using CompuskillsMvcProject.Models;
+@{
+    ErrorMessages error = new ErrorMessages();
+    ViewBag.Title = "Details";
+    if (ViewBag.error == true)
+    {
+        <p>@error.IdError()</p>
+    }
+    else if (ViewBag.clientError == true)
+    {
+        <p> @error.NullError("client")</p>
+    }
+    else
+    {
+        <h2>Details</h2>
+
+        <div>
+            <h4>Client</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.BillByClient)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.BillByClient)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.BillByProject)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.BillByProject)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.BillRate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.BillRate)
+                </dd>
+            </dl>
+        </div>
+        <span>
+            
+            @Html.ActionLink("Back to List", "Index")
+        </span>
+        <span>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ClientId }) 
+            </span>
+            <span>
+            @Html.ActionLink("Delete", "Delete", new { id = Model.ClientId })
+                </span>
+                <span>
+                    @Html.ActionLink("Plan job for this client", "CreateProjectForClient", "Projects", new { id = Model.ClientId }, null)
+                </span>
+
+    }
+
+<style>
+    span{
+        margin:100px;
+    }
+</style>
+    }

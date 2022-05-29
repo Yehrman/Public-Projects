@@ -1,0 +1,41 @@
+﻿@model CompuskillsMvcProject.Models.ScheduledPunchout
+
+@{
+    ViewBag.Title = "ScheduledPunchout";
+}
+
+<h2>ScheduledPunchout</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>ScheduledPunchout</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.JobId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("JobId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.JobId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PunchOut, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PunchOut, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PunchOut, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Punchout at this time" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+<strong>@ViewBag.PunchIn</strong>
+

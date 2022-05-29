@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+   footer,p,li{
+        font-size:17px;
+    }
+</style>
+<h2>Welcome to BizAssist.</h2>
+<h3>Here is what you need to do to get started</h3>
+
+<ol>
+    <li> @Html.ActionLink("Add a client", "Create", "Clients")</li>
+    <li> @Html.ActionLink("Add a project", "CreateSelect", "Projects")</li>
+    <li> @Html.ActionLink("Schedule a  job", "Create", "WorkSchedules")</li>
+    <li> @Html.ActionLink("See your job for today and punch in", "EmployeeDashboard", "WorkSchedules")</li>
+</ol>
+    <p>To add employees @Html.ActionLink("click here", "Register", "Account")</p>
+    <p>To procced to the main dashboard @Html.ActionLink("click here", "Dashboard")</p>
+    <p>For help using BizAssist @Html.ActionLink("click here", "HelpAbout")</p>
+<footer>This page is meant for a new user to BizAssist.To configure the site to open to the full menu upon login @Html.ActionLink("click here", "SetToFamiliar")</footer>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<MvcProjectDbConn.WorkSchedule>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Scheduled Jobs</h2>
+
+<b>
+    @Html.ActionLink("Schedule new jobs", "Create")
+</b>
+<table class="table">
+    <tr>
+        <th>
+         Client
+        </th>
+
+        <th>
+            Employee
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsScheduledPunchOut)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @* Need to put client name and decrypt it *@
+        @Html.DisplayFor(modelItem => item.Client.LastName)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Employee.FullName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Project.ProjectName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.IsScheduledPunchOut)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Date)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Time)
+    </td>
+    <td>
+        @Html.ActionLink("Details", "Details", new { id = item.id }) |
+    </td>
+</tr>
+    }
+
+</table>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+    <script>
+        $(document).ready(function () {
+            "use strict";
+
+            $("span#searchLink").on("click", function () {
+                $("div#search").slideToggle();
+            })
+        });
+    </script>
+}
+<span id="searchLink"> @Ajax.ActionLink("open/close search", "Search", new AjaxOptions { UpdateTargetId = "search" })</span>
+<div id="search"></div>

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<MvcProjectDbConn.ClientProject>
+@using CompuskillsMvcProject.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    var user = User.Identity.GetUserId();
+    ViewDatabaseLookups lookups = new ViewDatabaseLookups();
+    ViewBag.Title = "Index";
+    var projectBasis = lookups.ProjectsThatAreBilledOnAPerProjectBasis(user);
+}
+
+<h2>Client Projects</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateSelect")
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Project.ProjectName)
+        </th>
+        <th>
+            Project bill rate
+        </th>
+        <th>
+          Client bill rate
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Project.ProjectName)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.BillRate)
+    </td>
+    <td>
+        @*Exeption is thrown here*@
+        @Html.DisplayFor(modelItem => item.Client.BillRate)
+    </td>
+    <td>
+        @Html.ActionLink("Details","ClientDetails",new { id=item.ProjectId})|
+        @if (projectBasis.Any(x=>x==item.Project.ProjectName))
+        {
+        @Html.ActionLink("Change bill rate", "ChangeProjectBillRate",new { id=item.id}) 
+       }
+       | @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })
+    </td>
+</tr>
+    }
+
+</table>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+    <script>
+        $(document).ready(function () {
+            "use strict";
+
+            $("span#searchLink").on("click", function () {
+                $("div#search").slideToggle();
+            })
+        });
+    </script>
+}
+<span id="searchLink">@Ajax.ActionLink("Search", "ClientProjectSearch", new AjaxOptions { UpdateTargetId = "search" })</span>
+<div id="search"></div>
