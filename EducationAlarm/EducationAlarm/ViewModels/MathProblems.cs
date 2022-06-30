@@ -11,19 +11,18 @@ namespace EducationAlarm.ViewModels
         ViewDbLookups db = new ViewDbLookups();
          int Num1 { get; set; }
          int Num2 { get; set; }
-        public  string Equation { get; set; }
+          char Symbol { get; set; }
       
 
         Random r = new Random();
-      public List<int> TempList(string id)
+       List<int> TempList(string id)
         {
             List<int> tempSolutions = new List<int>();
             string subject = db.FindSubject(id);
             int answer = PickMathType(subject);
             tempSolutions.Add(answer);
             for (int i = 1; i < 4; i++)
-            {
-               
+            {              
                 int guess = PickGuess(subject);
                 if (tempSolutions.All(x => x != guess))
                 {
@@ -36,18 +35,15 @@ namespace EducationAlarm.ViewModels
             }
             return tempSolutions;
         }
-        //public List<MathProblems>ShuffledList(string id)
-        //{
-        //    var temp = TempList(id);
-        //    List<MathProblems> shuffled =new List<MathProblems>();
-        //    shuffled.Add();
-        //}
-    
         public ArrayList ShuffledList(string id)
         {
             var temp = TempList(id);
+            string subject = db.FindSubject(id);
+            Symbol = PickSymbol(subject);
             ArrayList shuffled = new ArrayList();
-            shuffled.Add(Equation);
+            shuffled.Add(Num1);
+            shuffled.Add(Symbol);
+            shuffled.Add(Num2);
             while(temp.Count!=0)
             {
                 int a = r.Next(0, temp.Count);
@@ -60,14 +56,14 @@ namespace EducationAlarm.ViewModels
         {
             Num1 = r.Next(1, 10);
             Num2 = r.Next(1, 10);
-            Equation = Num1.ToString() + " +" + Num2.ToString();
+         //   Equation = Num1.ToString() + " +" + Num2.ToString();
             return Num1 + Num2;
         }
         private int Subtract()
         {
             Num1 = r.Next(2, 20);
             Num2 = r.Next(1, 10);
-            Equation = Num1.ToString() + " -" + Num2.ToString();
+           // Equation = Num1.ToString() + " -" + Num2.ToString();
             if(Num1<Num2)
             {
                 Subtract();
@@ -78,7 +74,7 @@ namespace EducationAlarm.ViewModels
         {
             Num1 = r.Next(1, 10);
             Num2 = r.Next(1, 10);
-            Equation = Num1.ToString() + " *" + Num2.ToString();
+            //Equation = Num1.ToString() + " *" + Num2.ToString();
             return Num1 * Num2;
         }
         private int Divide()
@@ -89,68 +85,69 @@ namespace EducationAlarm.ViewModels
             {
                 Divide();
             }
-            Equation = Num1.ToString() + " /" + Num2.ToString();
+            //Equation = Num1.ToString() + " /" + Num2.ToString();
 
             //We need to ensure this is a int or change to decimal 
             return Num1 / Num2;
         }
-        //For some reason the pick guess method picks the same 
-        //thing every time
-        public int PickGuess(string subject)
+    
+         int PickGuess(string subject)
         {       
                 int guess = 0;
             switch (subject)
             {
-                case "addition":
+                case "Simple Addition":
                     guess = r.Next(1, 20);
                     break;
-                case "subtraction":
+                case "Simple Subtraction":
                    guess = r.Next(1, 19);
                     break;
-                case "multiplication":
+                case "Simple Multiplication":
                     guess = r.Next(1,100);
                     break;
-                case "division":
+                case "Simple Division":
                     guess= r.Next(1, 100);
                     break;
             }
             return guess;
         }
+ 
         private int PickMathType(string subject)
         {
             int x = 0;
             switch (subject)
             {
-                case "addition":
+                case "Simple Addition":
                     x = Add();
                     break;
-                case "subtraction":
+                case "Simple Subtraction":
                     x = Subtract();
                     break;
-                case "multiplication":
+                case "Simple Multiplication":
                     x = Multiply();
                     break;
-                case "division":
+                case "Simple Division":
                     x = Divide();
                     break;
             }
             return x;
         }
-        public char Symbol(string subject)
+        private char x { get; set; }
+           char PickSymbol(string subject)
         {
-            char x = ' ';
+           
             switch (subject)
             {
-                case "addition":
+                case "Simple Addition":
                     x = '+';
                     break;
-                case "subtraction":
+                case "Simple Subtraction":
                     x = '-';
                     break;
-                case "multiplication":
-                    x = '*';
+                case "Simple Multiplication":
+                   x = '*';
                     break;
-                case "division":
+                case "Simple Division":
                     x = '/';
                     break;
             }

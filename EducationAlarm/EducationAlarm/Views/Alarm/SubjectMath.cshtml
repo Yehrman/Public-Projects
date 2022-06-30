@@ -1,27 +1,43 @@
-﻿@model UserMathAnswers
+﻿@model UserAnswers
+
 @using EducationAlarm.ViewModels;
-@using Microsoft.AspNet.Identity;
 
 <h2>Subject Math</h2>
 
 <h3>Please type or paste the correct answer in the textbox</h3>
 
-@{ 
-    MathProblems mp = new MathProblems();
-    ViewDbLookups db = new ViewDbLookups();
-    string id = User.Identity.GetUserId();
-    string subject = db.FindSubject(id);
-    ViewBag.Title = "KnowledgeSolve";
-}
 
-@using (Html.BeginForm())
+@{
+
+    ViewBag.Title = "KnowledgeSolve";
+
+}
+<style>
+    form {
+        float: left;
+        width: 50%
+    }
+
+    #checkX {
+        float: right;
+        width: 50%
+    }
+</style>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryunobtrusive")
+
+@using (Ajax.BeginForm("Subject","Alarm",new AjaxOptions { UpdateTargetId= "checkX" }))
     {
-   
-    <div class="form-horizontal">
+
+@Html.HiddenFor(x => x.AlarmId)
+<div class="form-horizontal">
     <div class="form-group">
-        @{var list = mp.ShuffledList(id);
-            <p>1)@list[0]</p>
-            for (int j = 1; j < list.Count; j++)
+        @{var list = ViewBag.MathList1;
+            //int x1 = Convert.ToInt32(list[0]);
+            //int y1 = Convert.ToInt32(list[2]);
+
+            <p>1)@list[0] @list[1] @list[2]</p>
+            for (int j = 3; j < list.Count; j++)
             {
                 @*<p>@Html.RadioButton("Guess", list[j], mp.Guess)</p>*@
                 <p> @list[j] </p>
@@ -29,15 +45,18 @@
         }
 
         <div class="col-md-5">
-            @Html.EditorFor(model => model.Answer, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Answer, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.MathAnswer1, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MathAnswer1, "", new { @class = "text-danger" })
         </div>
     </div>
 
+
     <div class="form-group">
-        @{var list2 = mp.ShuffledList(id);
-            <p>2)@list2[0]</p>
-            for (int j = 1; j < list2.Count; j++)
+        @{var list2 = ViewBag.MathList2;
+
+
+            <p>2)@list2[0] @list2[1] @list2[2] </p>
+            for (int j = 3; j < list2.Count; j++)
             {
                 @*<p>@Html.RadioButton("Guess", list[j], mp.Guess)</p>*@
                 <p> @list2[j] </p>
@@ -45,52 +64,51 @@
         }
 
         <div class="col-md-5">
-            @Html.EditorFor(model => model.Answer2, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Answer2, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.MathAnswer2, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MathAnswer2, "", new { @class = "text-danger" })
         </div>
     </div>
 
 
+
     <div class="form-group">
-        @{ var list3 = mp.ShuffledList(id);
-            <p>3)@list3[0]</p>
-            for (int j = 1; j < list3.Count; j++)
+        @{ var list3 = ViewBag.MathList3;
+            <p>3)@list3[0] @list3[1] @list3[2]</p>
+            for (int j = 3; j < list3.Count; j++)
             {
                 <p> @list3[j] </p>
             }
         }
         <div class="col-md-5">
-            @Html.EditorFor(model => model.Answer3, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Answer3, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.MathAnswer3, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MathAnswer3, "", new { @class = "text-danger" })
         </div>
     </div>
 
+
     <div class="form-group">
-        @{ var list4 = mp.ShuffledList(id);
-            <p>4)@list4[0]</p>
-            for (int j = 1; j < list4.Count; j++)
+        @{ var list4 = ViewBag.MathList4;
+            <p>4)@list4[0] @list4[1] @list4[2] </p>
+            for (int j = 3; j < list4.Count; j++)
             {
-                <p> @list4[j] </p>
+                <p>@list4[j] </p>
             }
         }
         <div class="col-md-5">
-            @Html.EditorFor(model => model.Answer4, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Answer4, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.MathAnswer4, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MathAnswer4, "", new { @class = "text-danger" })
         </div>
     </div>
+
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Submit" class="btn btn-default" />
-        </div>
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit answers" class="btn btn-default" />
+            </div>
     </div>
-    
 </div>
 }
-@if (ViewBag.Error == true)
-{
-    <p>Please answer all the questions</p>
+<div id="checkX"> </div>
 
-}
-
+@* This is a check and x<i>&#10004;<br />x </i>*@
 

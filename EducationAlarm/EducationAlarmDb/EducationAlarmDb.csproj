@@ -58,10 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlarmContext.cs" />
-    <Compile Include="ForeignLanguage.cs" />
+    <Compile Include="Subject.cs" />
     <Compile Include="Identity\AlarmUserManager.cs" />
     <Compile Include="ForeignWord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubjectCategory.cs" />
     <Compile Include="UserInformation.cs" />
     <Compile Include="UserTime.cs" />
   </ItemGroup>

@@ -8,6 +8,7 @@ namespace EducationAlarmDb
         public string UserId { get; set; }
         public TimeSpan AlarmTime { get; set; }
      //   public string Subject { get; set; }
+     public bool AlarmActivated { get; set; }
         public virtual UserInformation User { get; set; }
     }
 }

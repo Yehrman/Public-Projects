@@ -1,0 +1,45 @@
+﻿<style>
+    .symbol{
+        margin-bottom:200px;
+        color:forestgreen;
+        font-size:35px;
+    }
+</style>
+
+@{
+    <div class="symbol">@ViewBag.Symbol1</div>
+    <div class="symbol">@ViewBag.Symbol2</div>
+    <div class="symbol">@ViewBag.Symbol3</div>
+    <div class="symbol">@ViewBag.Symbol4</div>
+    
+
+        if (ViewBag.Error == true)
+        {
+            <p>Please answer all the questions</p>
+
+        }
+    }
+
+@*@ViewBag.Title = "Results";
+    <table class="table">
+        <tr>
+            <th
+                Problem
+            </th>
+            <th>
+                Solution
+            </th>
+            <th>
+                Users Answer
+            </th>
+        </tr>
+        @{
+        var problems = ViewBag.Problems;
+        foreach (var item in problems)
+        {
+
+        }
+        }
+
+    </table>*@
+

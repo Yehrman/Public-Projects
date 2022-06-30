@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<EducationAlarmDb.UserTime>
-
+@using EducationAlarm.ViewModels;
 @{
+    ViewDbLookups db = new ViewDbLookups();
     ViewBag.Title = "Index";
 }
 
@@ -11,26 +12,38 @@
 </p>
 <table class="table">
     <tr>
-      
+
         <th>
             @Html.DisplayNameFor(model => model.AlarmTime)
         </th>
-     
+
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-    
-        <td>
-            @Html.DisplayFor(modelItem => item.AlarmTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Subject", "SubjectMath") |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        var activated = db.AlarmActivated(item.id);
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.AlarmTime)
+            </td>
+
+            @{ if (activated == false || activated == null)
+                {
+                    <td> @Html.ActionLink("Activate Alarm", "ActivateAlarm", new { id = item.id })</td>
+                }
+
+                else
+                {
+                    <td>   @Html.ActionLink("Turn off alarm", "Subject", new { id = item.id })</td>
+                }
+            }
+            <td>  @Html.ActionLink("Delete", "Delete", new { id = item.id })</td>
+
+        </tr>
+    }
 
 </table>
+
+

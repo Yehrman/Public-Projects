@@ -143,20 +143,22 @@ namespace EducationAlarm.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            RegisterViewModel model = new RegisterViewModel();
-            var subject = model.GetSubject();
-            ViewBag.Subject =new SelectList(subject);
+            // RegisterViewModel model = new RegisterViewModel();
+   
+            ViewBag.SubjectId = new SelectList(db.Subjects.ToList(), "SubjectId", "SubjectName");
+           
             return View();
         }
         void Update(UserInformation info)
         {
             try
             {
-                db.UserInformation.Add(new UserInformation { IdentityUserId=info.IdentityUserId,FirstName=info.FirstName,LastName=info.LastName,Subject=info.Subject});
+            // if(info.Subject=="Addition"||info.Subject== "multiplication" ||info.Subject== "division")
+                db.UserInformation.Add(new UserInformation { IdentityUserId=info.IdentityUserId,FirstName=info.FirstName,LastName=info.LastName,SubjectId=info.SubjectId});
                 db.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
-            {
+            {  
                 foreach (var validationErrors in dbEx.EntityValidationErrors)
                 {
                     foreach (var validationError in validationErrors.ValidationErrors)
@@ -180,7 +182,8 @@ namespace EducationAlarm.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                var info = new UserInformation { IdentityUserId=user.Id,FirstName = model.FirstName, LastName = model.LastName, Subject = model.Subject };
+                    var subjectId = db.Subjects.SingleOrDefault(x => x.SubjectId == model.SubjectId);
+                var info = new UserInformation { IdentityUserId=user.Id,FirstName = model.FirstName, LastName = model.LastName, SubjectId=subjectId.SubjectId };
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -196,8 +199,8 @@ namespace EducationAlarm.Controllers
                 }
                 AddErrors(result);
             }
-            var subject = model.GetSubject();
-            ViewBag.Subject = new SelectList(subject);
+            var subjectCategory = db.SubjectCategory.ToList();
+            ViewBag.SubjectCategory = new SelectList(subjectCategory, "subjectCategory.SubjectCategoryId", "subjectCategory.Category");
             // If we got this far, something failed, redisplay form
             return View(model);
         }

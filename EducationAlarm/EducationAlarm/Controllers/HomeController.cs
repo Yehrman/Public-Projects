@@ -11,7 +11,7 @@ namespace EducationAlarm.Controllers
 {
     public class HomeController : Controller
     {
-        Alarm alarm = new Alarm();
+      //  Alarm alarm = new Alarm();
         public ActionResult Index()
         {
             var user = User.Identity.GetUserId();
@@ -19,7 +19,7 @@ namespace EducationAlarm.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            alarm.ActivateAlarms(user);
+           // alarm.ActivateAlarms(user);
             return  RedirectToAction("index","Alarm"); 
         }
 

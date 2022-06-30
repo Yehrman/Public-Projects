@@ -170,7 +170,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlarmController.cs" />
-    <Compile Include="Controllers\ForeignLanguagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -186,9 +185,9 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AlarmSet.cs" />
     <Compile Include="ViewModels\MathProblems.cs" />
-    <Compile Include="ViewModels\UserLanguageAnswers.cs" />
-    <Compile Include="ViewModels\UserMathAnswers.cs" />
+    <Compile Include="ViewModels\UserAnswers.cs" />
     <Compile Include="ViewModels\ViewDbLookups.cs" />
+    <Compile Include="ViewModels\ViewUtilityMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -201,12 +200,15 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -250,14 +252,9 @@
     <Content Include="Views\Alarm\Index.cshtml" />
     <Content Include="Views\Alarm\Delete.cshtml" />
     <Content Include="Views\Alarm\SubjectMath.cshtml" />
-    <Content Include="Views\ForeignLanguages\Create.cshtml" />
-    <Content Include="Views\ForeignLanguages\Delete.cshtml" />
-    <Content Include="Views\ForeignLanguages\Details.cshtml" />
-    <Content Include="Views\ForeignLanguages\Edit.cshtml" />
-    <Content Include="Views\ForeignLanguages\Index.cshtml" />
-    <Content Include="Views\ForeignLanguages\AddWords.cshtml" />
-    <Content Include="Views\ForeignLanguages\WordIndex.cshtml" />
     <Content Include="Views\Alarm\SubjectLanguage.cshtml" />
+    <Content Include="Views\Alarm\Subject.cshtml" />
+    <Content Include="Views\Alarm\Hello.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

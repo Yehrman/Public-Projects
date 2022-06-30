@@ -84,16 +84,10 @@ namespace EducationAlarm.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
         //[Display(Name = "Subject ")]
-        public string Subject { get; set; }
-        public List<string> GetSubject()
-        {
-            List<string> Subject = new List<string>();
-            Subject.Add("addition");
-            Subject.Add("subtraction");
-            Subject.Add("multiplication");
-            Subject.Add("division");
-            return Subject;
-        }
+        public int SubjectId { get; set; }
+        [Display(Name ="Subject Category")]
+        public int SubjectCategory { get; set; }
+       
     }
 
     public class ResetPasswordViewModel
