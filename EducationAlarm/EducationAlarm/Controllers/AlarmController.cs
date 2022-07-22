@@ -54,8 +54,8 @@ namespace EducationAlarm.Controllers
     //            RequestUri = new Uri("https://nlp-translation.p.rapidapi.com/v1/translate?text="+item+"&to=iw&from=en"),
     //            Headers =
     //{
-    //    { "X-RapidAPI-Key", "b3708304cemsh674c6ae6883596ep135484jsned4431108dbe" },
-    //    { "X-RapidAPI-Host", "nlp-translation.p.rapidapi.com" },
+    //    { "X-RapidAPI-Key", "key" },
+    //    { "X-RapidAPI-Host", "p.rapidapi.com" },
     //},
     //        };
     //        using (var response = await client.SendAsync(request))
