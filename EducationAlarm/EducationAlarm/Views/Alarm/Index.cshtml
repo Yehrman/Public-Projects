@@ -6,9 +6,14 @@
 }
 
 <h2>Index</h2>
-
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryunobtrusive")
 <p>
-    @Html.ActionLink("set new ", "AlarmSet")
+    @if (ViewBag.Amount < 5)
+    {
+        @Ajax.ActionLink("set new", "AlarmSet", new AjaxOptions { UpdateTargetId = "alarmSet" })
+        @*@Html.ActionLink("set new ", "AlarmSet")*@
+    }
 </p>
 <table class="table">
     <tr>
@@ -39,11 +44,11 @@
                     <td>   @Html.ActionLink("Turn off alarm", "Subject", new { id = item.id })</td>
                 }
             }
-            <td>  @Html.ActionLink("Delete", "Delete", new { id = item.id })</td>
+            <td>  @Ajax.ActionLink("Edit", "Edit", new { id = item.id },new AjaxOptions { UpdateTargetId="editAlarm"})</td>
 
         </tr>
     }
 
 </table>
-
-
+<div id="alarmSet"></div>
+<div id="editAlarm"></div>

@@ -25,7 +25,21 @@ namespace EducationAlarm.ViewModels
             var subjects = db.Subjects.Where(x => x.SubjectCategoryId == id).ToList();
             return subjects;
         }
-  
+        string _Symbol { get; set; }
+        public string DefinitionMatched(string foreignWord,string definition)
+        {
+           
+            var word = db.ForeignWords.FirstOrDefault(x => x.Word == foreignWord);
+            if (word.Definintion == definition)
+            {
+                _Symbol = "\u2713";
+            }
+            else
+            {
+                _Symbol = "x";
+            }
+            return _Symbol;
+        }
         public void Dispose()
         {
             db.Dispose();

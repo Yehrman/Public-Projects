@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EducationAlarm.Models
@@ -87,6 +88,17 @@ namespace EducationAlarm.Models
         public int SubjectId { get; set; }
         [Display(Name ="Subject Category")]
         public int SubjectCategory { get; set; }
+        public string TimeZone { get; set; }
+        public List<string> TimeZones()
+        {
+            List<string> timeZones = new List<string>();
+            var zones = TimeZoneInfo.GetSystemTimeZones();
+            foreach (var item in zones)
+            {
+                timeZones.Add(item.Id);
+            }
+            return timeZones;
+        }
        
     }
 
@@ -118,4 +130,6 @@ namespace EducationAlarm.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+
 }

@@ -9,28 +9,40 @@ namespace EducationAlarm.Models
     {
         Random r = new Random();
         private AlarmContext db = new AlarmContext();
-        ForeignWord GetForeignWord(int id)
+        static List<string> unavailableForeignWords = new List<string>();
+        ForeignWord GetForeignWord(List<ForeignWord> words)
         {
-            var words = db.ForeignWords.Where(x => x.SubjectId == id).ToList();
-            ForeignWord selectedWord = words.ElementAt(r.Next(0, words.Count()));
+            ForeignWord selectedWord = words.ElementAt(r.Next(0, words.Count()-1));
             return selectedWord;     
         }
-        string Guess(int id)
+        string Guess(List<string> words,List<string> unavailableWords)
         {
-            var words = db.ForeignWords.Where(x => x.SubjectId == id).ToList();
-            string guess = words.ElementAt(r.Next(0, words.Count())).Definintion;
+            int amt = unavailableWords.Count()+1;
+            var guesses = words.Except(unavailableWords).ToList();
+            string guess = guesses.ElementAt(r.Next(0, guesses.Count-1));
+                //words.Where(x=>x.Definintion.Any()!=unavailableWords.Any()).ElementAt(r.Next(0, words.Count()-amt));
             return guess;
         }
         List<string> TempList(int id)
         {
+            var words = db.ForeignWords.Where(x => x.SubjectId == id).ToList();
+            List<string> definitions = new List<string>();
+            foreach (var item in words)
+            {
+                definitions.Add(item.Definintion);
+            }
             List<string> temp = new List<string>();
-            var word = GetForeignWord(id);
+            List<string> unavailableWords = new List<string>();
+            var word = GetForeignWord(words);
             temp.Add(word.Word);
             temp.Add(word.Definintion);
+            unavailableForeignWords.Add(word.Word);
+            unavailableWords.Add(word.Definintion);
             for (int i = 0; i < 3; i++)
             {
-                string guess = Guess(id);
-                temp.Add(guess);
+            string guess = Guess(definitions,unavailableWords);
+            temp.Add(guess);         
+            unavailableWords.Add(guess);
             }
             return temp;
         }

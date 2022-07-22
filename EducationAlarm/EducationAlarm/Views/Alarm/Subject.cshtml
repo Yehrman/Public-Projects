@@ -1,45 +1,37 @@
-﻿<style>
+﻿@{ if (ViewBag.Subject == "math")
+    {
+<style>
     .symbol{
-        margin-bottom:200px;
+        margin-bottom:40px;
         color:forestgreen;
-        font-size:35px;
+        font-size:33px;
     }
 </style>
-
+    }
+    else if(ViewBag.Subject == "language")
+    {
+<style>
+    .symbol {
+        margin-bottom: 180px;
+        color: forestgreen;
+        font-size: 33px;
+    }
+</style>
+    }
+    }
 @{
+    //Lanaguage needs a much bigger margin bottom then math
     <div class="symbol">@ViewBag.Symbol1</div>
     <div class="symbol">@ViewBag.Symbol2</div>
     <div class="symbol">@ViewBag.Symbol3</div>
     <div class="symbol">@ViewBag.Symbol4</div>
     
 
-        if (ViewBag.Error == true)
+        if (ViewBag.Answered == false)
         {
             <p>Please answer all the questions</p>
 
         }
     }
 
-@*@ViewBag.Title = "Results";
-    <table class="table">
-        <tr>
-            <th
-                Problem
-            </th>
-            <th>
-                Solution
-            </th>
-            <th>
-                Users Answer
-            </th>
-        </tr>
-        @{
-        var problems = ViewBag.Problems;
-        foreach (var item in problems)
-        {
-
-        }
-        }
-
-    </table>*@
-
+<footer>@Html.ActionLink("Back to dashboard","Index")</footer>

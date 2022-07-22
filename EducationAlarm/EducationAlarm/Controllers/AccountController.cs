@@ -13,6 +13,7 @@ using EducationAlarmDb;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.Data.Entity;
 
 namespace EducationAlarm.Controllers
 {
@@ -83,7 +84,7 @@ namespace EducationAlarm.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Alarm");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -95,66 +96,24 @@ namespace EducationAlarm.Controllers
             }
         }
 
-        //
-        // GET: /Account/VerifyCode
-        [AllowAnonymous]
-        public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
-        {
-            // Require that the user has already logged in via username/password or external login
-            if (!await SignInManager.HasBeenVerifiedAsync())
-            {
-                return View("Error");
-            }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
-
-        //
-        // POST: /Account/VerifyCode
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
-            // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(model.ReturnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid code.");
-                    return View(model);
-            }
-        }
-
-        //
+  
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
-            // RegisterViewModel model = new RegisterViewModel();
-   
+            //Error getting thrown here
+             RegisterViewModel model = new RegisterViewModel();  
+            //error here
             ViewBag.SubjectId = new SelectList(db.Subjects.ToList(), "SubjectId", "SubjectName");
-           
+            ViewBag.TimeZone = new SelectList(model.TimeZones());
             return View();
         }
-        void Update(UserInformation info)
+        void Update(UserInformation model)
         {
             try
             {
             // if(info.Subject=="Addition"||info.Subject== "multiplication" ||info.Subject== "division")
-                db.UserInformation.Add(new UserInformation { IdentityUserId=info.IdentityUserId,FirstName=info.FirstName,LastName=info.LastName,SubjectId=info.SubjectId});
+                db.UserInformation.Add(new UserInformation { IdentityUserId=model.IdentityUserId,FirstName=model.FirstName,LastName=model.LastName,TimeZone=model.TimeZone,SubjectId=model.SubjectId});
                 db.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
@@ -173,51 +132,111 @@ namespace EducationAlarm.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new  IdentityUser{ UserName = model.Email, Email = model.Email, };
-                var result = await UserManager.CreateAsync(user, model.Password);
+            
+                var result =  UserManager.Create(user, model.Password);
+                var data = new { id = user.Id };
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    
+                   // await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     var subjectId = db.Subjects.SingleOrDefault(x => x.SubjectId == model.SubjectId);
-                var info = new UserInformation { IdentityUserId=user.Id,FirstName = model.FirstName, LastName = model.LastName, SubjectId=subjectId.SubjectId };
-
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-
-
+                var info = new UserInformation { IdentityUserId=user.Id,FirstName = model.FirstName, LastName = model.LastName, SubjectId=subjectId.SubjectId ,TimeZone=model.TimeZone};
                     Update(info);
-            return RedirectToAction("index", "Home");
+                  var newUser = db.UserInformation.Include("IdentityUser").SingleOrDefault(x => x.IdentityUserId == data.id);
+                  
+                    TempData["newUser"] =newUser;
+                    Confirm(newUser,"confirm");
+            return RedirectToAction("ConfirmEmail");
                  
                 }
                 AddErrors(result);
             }
-            var subjectCategory = db.SubjectCategory.ToList();
-            ViewBag.SubjectCategory = new SelectList(subjectCategory, "subjectCategory.SubjectCategoryId", "subjectCategory.Category");
-            // If we got this far, something failed, redisplay form
+            ViewBag.SubjectId = new SelectList(db.Subjects.ToList(), "SubjectId", "SubjectName");
+            ViewBag.TimeZone = new SelectList(model.TimeZones());
             return View(model);
         }
+        private static string Code { get; set; }
+        private static void VerificationCode()
+        {
+            Random random = new Random();
+            int code = random.Next(1000001, 9999999);
+            Code = code.ToString();
 
+        }
+        private static string VerCode
+        {
+            get
+            {
+                return Code;
+            }
+        }
+        private static DateTime TimeCodeSent;
+        private void Confirm(UserInformation user,string description)
+        {
+           
+          //  var thisUser = db.UserInformation.Include("IdentityUser").SingleOrDefault(x => x.IdentityUserId == id);
+            VerificationCode();
+            string code = VerCode;
+            EmailSetup setup = new EmailSetup();
+           // var newUser=(IdentityUser) TempData["newUser"]; 
+            if (description == "confirm")
+            {
+                setup.Content = $"Dear {user.FirstName}  {user.LastName} Thank you for signing up with EducationAlarm. Please confirm your account by typing in this code " +
+                      code + ". We look foward to a mutually rewarding relationship together.Sincerely  the EduationAlarm developer" + "  " + "P.S This code will expire in 15 minutes";
+                setup.Subject = "Confirm email";
+            }
+            else if(description=="reset")
+            {
+                setup.Content = $"Dear {user.FirstName}  {user.LastName} We found your account. Please  type in this code  " +
+             code + " in the Reset password field on the reset page . Sincerely  the EducationAlarm developer" + "    " + "P.S This code will expire in 15 minutes";
+                setup.Subject = "Reset password";
+            }
+                 setup.Sender = "support@educationalarm.com";
+           setup.SenderName = "Education Alarm";
+            setup.Reciever = user.IdentityUser.Email;
+            setup.RecieverName = user.FirstName + " " + user.LastName;
+            setup.EmailPassword = "It'sfromHashem1";
+            EmailMessage message = new EmailMessage();
+            message.SendEmail(setup);
+            TimeCodeSent = DateTime.UtcNow;
+        }
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public  ActionResult ConfirmEmail()
         {
-            if (userId == null || code == null)
+            EmailConfirmation confirmation = new EmailConfirmation();
+            UserInformation user = (UserInformation)TempData["newUser"];
+            confirmation.Id = user.IdentityUserId;
+            ViewBag.Message = "Please check your email for your confirmation code";
+            return View(confirmation);
+        }
+        [HttpPost]
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        public ActionResult ConfirmEmail(EmailConfirmation confirmation)
+        {
+          
+            if (confirmation.Id == null || confirmation.Password == null)
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            if (confirmation.Password == VerCode && DateTime.UtcNow < TimeCodeSent.AddMinutes(15))
+            {
+                var newUser = db.UserInformation.Include("IdentityUser").SingleOrDefault(x => x.IdentityUser.Id == confirmation.Id);
+                newUser.IdentityUser.EmailConfirmed = true;
+                db.Entry(newUser).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Login");
+            }
+            ModelState.AddModelError("code", "Please check your code and try again");
+            return View();
         }
-
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
@@ -231,30 +250,21 @@ namespace EducationAlarm.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            var loggedInUser = User.Identity.GetUserId();  
+            var user = db.UserInformation.Include("IdentityUser").FirstOrDefault(x => x.IdentityUser.Email == model.Email);
+            //var info = db.UserInformation.SingleOrDefault(x => x.IdentityUserId ==loggedInUser);
+            if(user.IdentityUser.Id==loggedInUser&&user.IdentityUser.Email==model.Email)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
-
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                Confirm(user, "reset");
+                return RedirectToAction("ForgotPasswordConfirmation");
             }
 
-            // If we got this far, something failed, redisplay form
+            // If we got this far, something failed, redisplay form give error message
             return View(model);
         }
 
-        //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
@@ -262,12 +272,14 @@ namespace EducationAlarm.Controllers
             return View();
         }
 
-        //
+       
+        //We need to finish up the reset password
         // GET: /Account/ResetPassword
+        [HttpGet]
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword()
         {
-            return code == null ? View("Error") : View();
+            return View();
         }
 
         //
@@ -275,25 +287,31 @@ namespace EducationAlarm.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        public  ActionResult ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = db.UserInformation.Include("IdentityUser").FirstOrDefault(x => x.IdentityUser.Email == model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
+            if (user.IdentityUser.Email == model.Email && Code == model.Code && DateTime.UtcNow < TimeCodeSent.AddMinutes(15))
             {
+
+                UserManager.RemovePassword(user.IdentityUser.Id);
+                UserManager.AddPassword(user.IdentityUser.Id, model.Password);
+                // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            AddErrors(result);
-            return View();
+            else
+            {
+                ModelState.AddModelError("error", "Please check your email and code and try again");
+                return View();
+            }
         }
 
         //

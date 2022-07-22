@@ -13,6 +13,7 @@ namespace EducationAlarmDb
         public DbSet<UserInformation> UserInformation { get; set; }
         public DbSet<SubjectCategory> SubjectCategory { get; set; }
         public DbSet<Subject> Subjects { get; set; }
+   
         public static AlarmContext Create()
         {
             return new AlarmContext();

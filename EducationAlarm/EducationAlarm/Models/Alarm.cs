@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Media;
 using EducationAlarmDb;
-using System.Globalization;
 using System.Timers;
 using System.Diagnostics;
 namespace EducationAlarm.Models
@@ -14,17 +11,21 @@ namespace EducationAlarm.Models
         private AlarmContext db = new AlarmContext();
         //Seting the alarm time and activating it when the time comes 
         internal DateTime AlarmRingTime { get; set; }
-        private string SoundLocation { get; set; }
+     //   private string _SoundLocation { get; set; }
         Timer Timer = new Timer();
         //MathProblems mathSolutions = new MathProblems();
-       
+       //public string SetAlarmSound(string alarmLocation)
+       // {
+       //     _SoundLocation = alarmLocation;
+       //     return _SoundLocation;
+       // }
         
            SoundPlayer player = new SoundPlayer();
         private  void Set_Alarm()
         {    
             try
             {
-                player.SoundLocation = @"C:\Windows\Media\Alarm01.wav";//SoundLocation;      
+                player.SoundLocation = @"E:\HostingSpaces\bizassis\educationalarm.com\wwwroot\alarmsounds\Alarm01.wav";
                 player.PlayLooping();
             }
             catch(Exception ex)
@@ -48,40 +49,57 @@ namespace EducationAlarm.Models
             var alarm = db.UserTimes.SingleOrDefault(x => x.id == id);
             return alarm;
         }
-        private void TimeTillAlarm(DateTime time,int id)
+        private void TimeTillAlarm(DateTime time,int id,string userId)
         {
-                //Only the last alarm  time works
-                   TimeSpan timeSpan = time - DateTime.Now;
-                    if (time > DateTime.Now)
+            var localTime = GetLocalTime(userId);
+            TimeSpan timeSpan = time - localTime;
+                    if (time > localTime)
                     {
                         double interval = timeSpan.TotalMilliseconds;
-                 Timer.Interval = interval;
+                Timer.Interval = interval;
                 Debug.WriteLine(timeSpan);
-                    Timer.Start();
+                Timer.Start();
                 var alarm = AlarmTime(id);
                 alarm.AlarmActivated = true;
                 db.SaveChanges();
-                    Timer.Elapsed += delegate { Set_Alarm(); };
+                Timer.Elapsed += delegate { Set_Alarm(); };
                 Timer.AutoReset = false;
                 }                   
             }
-        public DateTime ConcatDateStrings(string time)
+        private string GetTimeZone(string userId)
         {
-                    string DatePart = DateTime.Today.ToString("MM/dd/yy");
-                    string DateandTime = DatePart +" "+ time;
-                    DateTime Join = DateTime.Parse(DateandTime);
+            var clientInfo = db.UserInformation.SingleOrDefault(x => x.IdentityUserId == userId);
+            var clientTimeZone = clientInfo.TimeZone;
+            return clientTimeZone;
+        }
+        private DateTime GetLocalTime(string userId)
+        {
+            var clientTimeZone = GetTimeZone(userId);
+            DateTime date = DateTime.Now;
+            var zone = TimeZoneInfo.FindSystemTimeZoneById(clientTimeZone);
+            DateTime localTime = TimeZoneInfo.ConvertTime(date, zone);
+            return localTime;
+        }
+        private DateTime ConcatDateStrings(string time,string userId)
+        {
+            //This must be the users time zone
+            var localTime = GetLocalTime(userId);
+             string DatePart = localTime.ToString("MM/dd/yy");
+             string DateandTime = DatePart +" "+ time;
+              DateTime Join = DateTime.Parse(DateandTime);
             return Join;
         }
-        public void ActivateAlarm(int id)
+        public void ActivateAlarm(int id,string userId)
         {
                 var alarm = db.UserTimes.SingleOrDefault(x => x.id == id);
-                 string t = alarm.AlarmTime.ToString();
-                    var time = ConcatDateStrings(t);
-                    if (time < DateTime.Now)
-                    {
-                        time.AddDays(1);
-                    }
-                    TimeTillAlarm(time,id);
+                string t = alarm.AlarmTime.ToString();
+                    var time = ConcatDateStrings(t,userId);
+            var localTime = GetLocalTime(userId);
+            if (time < localTime)
+            {
+                time.AddDays(1);
+            }
+            TimeTillAlarm(time,id,userId);
         }
         public void Dispose()
         {

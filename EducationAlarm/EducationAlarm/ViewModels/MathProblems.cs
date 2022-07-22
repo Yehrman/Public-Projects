@@ -15,41 +15,43 @@ namespace EducationAlarm.ViewModels
       
 
         Random r = new Random();
-       List<int> TempList(string id)
-        {
-            List<int> tempSolutions = new List<int>();
-            string subject = db.FindSubject(id);
-            int answer = PickMathType(subject);
-            tempSolutions.Add(answer);
-            for (int i = 1; i < 4; i++)
-            {              
-                int guess = PickGuess(subject);
-                if (tempSolutions.All(x => x != guess))
-                {
-                    tempSolutions.Add(guess);
-                }
-                else
-                {
-                    i = i - 1;
-                }
-            }
-            return tempSolutions;
-        }
+       //List<int> TempList(string id)
+       // {
+       //     List<int> tempSolutions = new List<int>();
+       //     string subject = db.FindSubject(id);
+       //     int answer = PickMathType(subject);
+       //     tempSolutions.Add(answer);
+       //     for (int i = 1; i < 4; i++)
+       //     {              
+       //         int guess = PickGuess(subject);
+       //         if (tempSolutions.All(x => x != guess))
+       //         {
+       //             tempSolutions.Add(guess);
+       //         }
+       //         else
+       //         {
+       //             i = i - 1;
+       //         }
+       //     }
+       //     return tempSolutions;
+       // }
         public ArrayList ShuffledList(string id)
         {
-            var temp = TempList(id);
+           // var temp = TempList(id);
             string subject = db.FindSubject(id);
             Symbol = PickSymbol(subject);
+            int answer = PickMathType(subject);
             ArrayList shuffled = new ArrayList();
             shuffled.Add(Num1);
             shuffled.Add(Symbol);
             shuffled.Add(Num2);
-            while(temp.Count!=0)
-            {
-                int a = r.Next(0, temp.Count);
-                shuffled.Add(temp[a]);
-                temp.RemoveAt(a);
-            }
+            shuffled.Add(answer);
+            //while(temp.Count!=0)
+            //{
+            //    int a = r.Next(0, temp.Count);
+            //    shuffled.Add(temp[a]);
+            //    temp.RemoveAt(a);
+            //}
             return shuffled;
         }
         private int Add()
@@ -90,28 +92,7 @@ namespace EducationAlarm.ViewModels
             //We need to ensure this is a int or change to decimal 
             return Num1 / Num2;
         }
-    
-         int PickGuess(string subject)
-        {       
-                int guess = 0;
-            switch (subject)
-            {
-                case "Simple Addition":
-                    guess = r.Next(1, 20);
-                    break;
-                case "Simple Subtraction":
-                   guess = r.Next(1, 19);
-                    break;
-                case "Simple Multiplication":
-                    guess = r.Next(1,100);
-                    break;
-                case "Simple Division":
-                    guess= r.Next(1, 100);
-                    break;
-            }
-            return guess;
-        }
- 
+   
         private int PickMathType(string subject)
         {
             int x = 0;

@@ -11,7 +11,9 @@ namespace EducationAlarmDb
         public virtual Subject Subject { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string TimeZone { get; set; }
         public string IdentityUserId { get; set; }
+      //  public string Email { get; set; }
         public virtual IdentityUser IdentityUser { get; set; }
     }
 }

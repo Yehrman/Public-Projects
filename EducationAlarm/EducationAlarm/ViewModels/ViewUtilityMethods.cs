@@ -7,10 +7,12 @@ namespace EducationAlarm.ViewModels
 {
     public class ViewUtilityMethods
     {
+
         string _Symbol { get; set; }
-        public string Symbol(int ans = 0, int? myAns = 0, string answer = "", string myAnswer = "hello")
+        public string Symbol(int ans = 0, int? myAns = 0)
         {
-            if (ans == myAns || answer == myAnswer)
+
+            if (ans == myAns)
             {
                 _Symbol = "\u2713";
             }

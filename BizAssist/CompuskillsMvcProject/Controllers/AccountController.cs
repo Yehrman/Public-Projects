@@ -188,14 +188,15 @@ namespace CompuskillsMvcProject.Controllers
             // EmailAddress = employee.Email;
             setup.Content = $"Dear {employee.FirstName}  {employee.LastName} Thank you for signing up with bizassist. Please confirm your account by typing in this code " +
                   code + ". We look foward to a mutually rewarding relationship together.Sincerely  the bizAssist developer" + "  " + "P.S This code will expire in 15 minutes";
-            //setup.Content = $"Dear {employee.FirstName}  {employee.LastName} Thank you for signing up with bizassist. Please confirm your account by clicking here  <a href='http://localhost:56588//Account/ConfirmEmailUsingLink/{code},{employee.Email}/'>clicking here </a> " +
-            //   code+ ". We look foward to a mutually rewarding relationship together.Sincerely  the bizAssist developer"+"  "+ "P.S This code will expire in 15 minutes";
-            setup.Sender = "support@bizassist.me";
+            setup.Content = $"Dear {employee.FirstName}  {employee.LastName} Thank you for signing up with bizassist. Please confirm your account by clicking here  <a href='http://localhost:56588//Account/ConfirmEmailUsingLink/{code},{employee.Email}/'>clicking here </a> " +
+               code+ ". We look foward to a mutually rewarding relationship together.Sincerely  the bizAssist developer"+"  "+ "P.S This code will expire in 15 minutes";
+            //  setup.Sender = "support@bizassist.me";
+            setup.Sender = "https/localhost:56588";
             setup.SenderName = "BizAssist";
             setup.Reciever = employee.Email;
             setup.RecieverName = employee.FirstName + " " + employee.LastName;
             setup.Subject = "Confirm email";
-            setup.EmailPassword = "t/szpjqrgy0mih[lvfoweFaEnb4cud";
+          //  setup.EmailPassword = "t/szpjqrgy0mih[lvfoweFaEnb4cud";
             EmailMessage message = new EmailMessage();
             message.SendEmail(setup);
             TimeCodeSent = DateTime.UtcNow;

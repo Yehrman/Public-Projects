@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
-using EducationAlarm.Models;
-using System.Threading.Tasks;
+
 
 namespace EducationAlarm.Controllers
 {
@@ -14,13 +10,18 @@ namespace EducationAlarm.Controllers
       //  Alarm alarm = new Alarm();
         public ActionResult Index()
         {
-            var user = User.Identity.GetUserId();
-            if (user == null)
+            if(User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("index", "alarm");
             }
-           // alarm.ActivateAlarms(user);
-            return  RedirectToAction("index","Alarm"); 
+            return View();
+           // var user = User.Identity.GetUserId();
+           // if (user == null)
+           // {
+           //     return RedirectToAction("Login", "Account");
+           // }
+           //// alarm.ActivateAlarms(user);
+           // return  RedirectToAction("index","Alarm"); 
         }
 
         public ActionResult About()
@@ -29,7 +30,7 @@ namespace EducationAlarm.Controllers
 
             return View();
         }
-
+    
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
