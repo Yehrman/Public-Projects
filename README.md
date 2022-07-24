@@ -7,4 +7,4 @@ at regular intervals (set by the user) will deliver the amount that the employee
 It decrypts it and sends it to the front end. (This program runs on BizAssist)  
 
 3.EducationAlarm- A Asp.Net Mvc web app which allows a user to select a subject .Set an alarm and the only way to turn off the alarm is to submits answers
-to questions on that subject. (Please note that currently while the main functionality is there, this is still a work in progress)
+to questions on that subject. (Please note that currently while the main functionality is there, this is still not 100% finished)
